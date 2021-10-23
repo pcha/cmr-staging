@@ -1,0 +1,6 @@
+/.idea/
+/core_mock/src/vendor/
+/integration_test/src/vendor/
+/staging/src/vendor/
+/staging/src/build/logs/
+/staging/src/public/coverage/

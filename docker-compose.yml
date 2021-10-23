@@ -1,0 +1,36 @@
+version: "3.9"
+services:
+  staging:
+    build:
+      ./staging
+    ports:
+      - 8000:80
+    volumes:
+      - ./staging/src:/var/www
+    environment:
+      - core_host=http://core_mock
+    depends_on:
+      - core_mock
+  core_mock:
+    build:
+      ./core_mock
+    volumes:
+      - ./core_mock/src:/var/www
+  integration_test:
+    build:
+      ./integration_test
+    volumes:
+      - ./integration_test/src:/var/www
+    depends_on:
+      - staging
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    container_name: swagger_ui_container
+    ports:
+      - 8001:8080
+    volumes:
+      - ./swagger-ui:/usr/share/nginx/html/doc
+    environment:
+      API_URL: doc/openapi.yaml
+    depends_on:
+      - staging

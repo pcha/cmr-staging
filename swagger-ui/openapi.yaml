@@ -1,0 +1,159 @@
+openapi: 3.0.0
+info:
+  title: "Collective Minds Radiology - Staging API"
+  version: "0.1"
+
+servers:
+  - url: http://localhost:8000
+    description: Development server
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+  responses:
+    401:
+      description: Not authenticated
+      content:
+        application/json:
+          schema:
+            $ref: Error
+          example:
+            value:
+              error: Authorization token not provided
+    default:
+      description: Unexpected Error
+      content:
+        application/json:
+          schema:
+            $ref: Error
+          example:
+            value:
+              error: Unexpected error (code 0)
+
+security:
+  - BearerAuth: [ ]
+
+paths:
+  /subjects/{id}:
+    parameters:
+      - name: id
+        in: path
+        description: Id of subject to insert
+        required: true
+    put:
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                  required: true
+                lastName:
+                  type: string
+                  required: true
+                title:
+                  type: string
+                  required: true
+                licensNumber:
+                  type: string
+                  required: true
+            example:
+              value:
+                firstName: John
+                lastName: Doe
+                title: Dr
+                licensNumbe: 123456
+      responses:
+        201:
+          description: "The subject is inserted"
+          content:
+            aplication/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  firstName:
+                    type: string
+                  lastName:
+                    type: string
+                  title:
+                    type: string
+                  licensNumber:
+                    type: string
+              example:
+                value:
+                  id: 1
+                  firstName: John
+                  lastName: Doe
+                  title: Dr
+                  licensNumbe: 123456
+        403:
+          description: "A subject with the same ID already exists"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                value:
+                  error: There is already a subject with ID 1
+  /subjects/{id}/assign:
+    parameters:
+      - name: id
+        in: path
+        description: Id of subject to insert
+        required: true
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                projectId:
+                  type: integer
+                  required: true
+            example:
+              value:
+                projectId: 2
+      responses:
+        200:
+          description: Project assigned
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                value:
+                  message: Project 1 assigned to subject 2
+        404:
+          description: Subject not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                value:
+                  error: Subject 1 not found
+        403:
+          description: Project Already assigned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                value:
+                  error: The project 2 is already assigned to the Subject 1

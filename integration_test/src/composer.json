@@ -1,0 +1,16 @@
+{
+  "name": "cmr/staging_integration_tests",
+  "autoload": {
+    "psr-4": {
+      "CMR\\Staging\\IntegrationTests\\": "tests/"
+    }
+  },
+  "require": {
+    "php": ">=8.0.0",
+    "guzzlehttp/guzzle": "^7.4",
+    "phpunit/phpunit": "^9.5"
+  },
+  "scripts": {
+    "test": "vendor/bin/phpunit --configuration phpunit.xml --do-not-cache-result --colors=always --testdox --testdox-html public/index.php"
+  }
+}
