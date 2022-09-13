@@ -15,10 +15,12 @@ That's all! this command will start the solution using docker-compose and will r
 Besides the staging API, the repository contains additional services to complement the solution. Here is a list of the
 services and an explanation of them:
 
-service|mapped port|description -|-|- staging|8000|The main service. This is the staging API. core_mock|-|This is the
-mock of the core API used for testing and development integration_test|-|This is a small application used only for
-running the integration tests and is stopped by the run.s script after that swagger-ui|8001|a swagger service with the
-definition of the staging API
+service | mapped port | description 
+-|-|- 
+staging | 8000 | The main service. This is the staging API. 
+core_mock | - | This is the mock of the core API used for testing and development 
+integration_test | - | This is a small application used only for running the integration tests and is stopped by the run.sh script after that. 
+swagger-ui | 8001 | a swagger service with the definition of the staging API
 
 ## About the development
 
